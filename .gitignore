@@ -1,0 +1,19 @@
+# Local development and private configuration (never publish)
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.log
+*.tmp
+*.bak
+__pycache__/
+node_modules/
+.env
+.env.*
+!.env.example
+/backups/
+/reports/
+/tools/
+/Material-Figma/
+/referencias-figma/
+/originales-assets/
+/__*-check.html

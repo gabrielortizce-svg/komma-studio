@@ -1,0 +1,50 @@
+/* Experimental, home-only intro. The normal page is the no-JavaScript default. */
+.home-intro[hidden] { display: none; }
+.intro-pending .home-intro { display: block; }
+.intro-pending:not(.intro-ready)::before {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  content: "";
+  background: var(--color-komma-yellow);
+}
+.intro-pending .site-brand { visibility: hidden; transition: none; }
+.intro-pending.intro-ready .site-brand { visibility: visible; }
+.home-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  overflow: clip;
+  color: var(--color-black);
+  touch-action: none;
+}
+.home-intro:focus { outline: none; }
+.home-intro__panels { position: absolute; inset: 0; display: grid; grid-template: 1fr 1fr / 1fr 1fr; }
+.home-intro__panel { background: var(--color-komma-yellow); }
+.home-intro__byline {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: 0;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.3;
+  white-space: nowrap;
+  opacity: 0;
+}
+@media (max-width: 767px) {
+  .home-intro__byline { font-size: 28px; }
+  /* Seal the horizontal seam without changing GSAP's panel boxes or paths. */
+  .home-intro__panel:nth-child(-n + 2) { position: relative; }
+  .home-intro__panel:nth-child(-n + 2)::after {
+    position: absolute;
+    inset: 0 0 -3px;
+    content: "";
+    background: var(--color-komma-yellow);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-intro { display: none !important; }
+  .intro-pending::before { display: none; }
+  .intro-pending .site-brand { visibility: visible; }
+}

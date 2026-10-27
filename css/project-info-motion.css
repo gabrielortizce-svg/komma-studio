@@ -1,0 +1,61 @@
+/* Shared Miuu-approved info-column position and reveal, loaded only by the
+   five project subsections that have not yet received that behavior. */
+@media (min-width: 1200px) {
+  .project-detail-page .detail-info {
+    padding-top: 0;
+    top: var(--project-info-sticky-top, calc(var(--nav-top) + var(--font-header) * 1.1875 + 30px));
+  }
+}
+
+/* Keep the existing page-entry effect from competing with the info sequence. */
+.motion-page-enter .project-detail-page .detail-info > * { animation: none; }
+
+html.project-info-motion-armed .project-detail-page .detail-info__block,
+html.project-info-motion-armed .project-detail-page .detail-facts > div {
+  position: relative;
+  border-bottom-color: transparent;
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 450ms cubic-bezier(0.215, 0.61, 0.355, 1),
+    transform 450ms cubic-bezier(0.215, 0.61, 0.355, 1);
+  transition-delay: var(--project-info-reveal-delay, 0ms);
+}
+
+html.project-info-motion-armed .project-detail-page .detail-info__block::after,
+html.project-info-motion-armed .project-detail-page .detail-facts > div::after {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 1px;
+  content: "";
+  background: var(--project-accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 500ms cubic-bezier(0.215, 0.61, 0.355, 1);
+  transition-delay: calc(var(--project-info-reveal-delay, 0ms) + 80ms);
+}
+
+html.project-info-motion-armed .project-detail-page .detail-info__block.project-info-revealed,
+html.project-info-motion-armed .project-detail-page .detail-facts > div.project-info-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+html.project-info-motion-armed .project-detail-page .detail-info__block.project-info-revealed::after,
+html.project-info-motion-armed .project-detail-page .detail-facts > div.project-info-revealed::after {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.project-info-motion-armed .project-detail-page .detail-info__block,
+  html.project-info-motion-armed .project-detail-page .detail-facts > div {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    border-bottom-color: var(--project-accent);
+  }
+  html.project-info-motion-armed .project-detail-page .detail-info__block::after,
+  html.project-info-motion-armed .project-detail-page .detail-facts > div::after { display: none; }
+}

@@ -1,0 +1,79 @@
+/* Optional motion layer. Without the head script, the approved layout is visible. */
+:root {
+  --motion-ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+  --motion-page-distance: 12px;
+  --motion-card-distance: 16px;
+}
+
+/* Opacity does not change the containing block of sticky/fixed descendants. */
+.motion-page-enter main {
+  animation: komma-page-fade 400ms var(--motion-ease-out) backwards;
+}
+
+/* Move only content leaves, never main, the sticky stage or the info column. */
+.motion-page-enter :is(
+  .project-title,
+  .detail-heading,
+  .detail-gallery,
+  .detail-info > *,
+  .contact-hero,
+  .contact-services,
+  .art-stack > .scene-art:first-child,
+  .copy-stack > .scene-copy:first-child
+) {
+  animation: komma-page-shift 400ms var(--motion-ease-out) backwards;
+}
+
+@keyframes komma-page-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes komma-page-shift {
+  /* The individual translate property leaves GSAP's transform untouched. */
+  from { translate: 0 var(--motion-page-distance); }
+  to { translate: 0 0; }
+}
+
+/* The original divider box stays intact for KOMMA's getBoundingClientRect(). */
+.motion-enabled .footer-top-rule { background: transparent; }
+.motion-enabled .footer-top-rule::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: #fff;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 650ms var(--motion-ease-out);
+}
+.motion-enabled .footer-top-rule.motion-revealed::before { transform: scaleX(1); }
+
+/* Animate the card, independently of the image transform used for hover. */
+.motion-enabled .project-card {
+  opacity: 0;
+  transform: translateY(var(--motion-card-distance));
+  transition: opacity 600ms var(--motion-ease-out), transform 600ms var(--motion-ease-out);
+}
+.motion-enabled .project-card.motion-revealed {
+  opacity: 1;
+  transform: none;
+  transition-delay: var(--motion-delay, 0ms);
+}
+.motion-enabled .project-card:focus-within {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0ms;
+}
+
+@media (max-width: 767px) {
+  :root { --motion-page-distance: 6px; --motion-card-distance: 8px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-page-enter main,
+  .motion-page-enter :is(.project-title, .detail-heading, .detail-gallery, .detail-info > *, .contact-hero, .contact-services, .scene-art, .scene-copy) {
+    animation: none;
+  }
+  .motion-enabled .project-card { opacity: 1; transform: none; transition: none; }
+  .motion-enabled .footer-top-rule::before { transform: none; transition: none; }
+}

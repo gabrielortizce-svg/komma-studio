@@ -1,0 +1,43 @@
+@media (max-width: 767px) {
+  :root {
+    --font-hero: 64px;
+    --font-header: 14px;
+    --font-category: 24px;
+    --font-project-link: 24px;
+    --font-brand: 32px;
+    --nav-top: max(24px, env(safe-area-inset-top));
+    --nav-inline: 24px;
+    --nav-contact-inset: 24px;
+    --brand-bottom: max(24px, env(safe-area-inset-bottom));
+  }
+  .site-nav { gap: 16px; }
+  .nav-label { line-height: 1.142857143; }
+  .scene-category {
+    top: auto;
+    bottom: calc(50% + 90px);
+    padding-inline: 24px;
+    line-height: 1.166666667;
+  }
+  .scene-title {
+    top: 50%;
+    transform: translateY(-50%);
+    padding-inline: 12px;
+    white-space: normal;
+    line-height: 1.08;
+  }
+  .title-fit { max-width: 100%; }
+  .mobile-break { display: inline; }
+  .scene-project-link { top: calc(50% + 109px); font-size: 24px; line-height: 1.21875; }
+}
+
+@media (max-height: 450px) and (min-width: 768px) {
+  :root { --font-hero: 100px; --font-category: 24px; --font-project-link: 24px; --font-brand: 32px; }
+  .scene-category { top: auto; bottom: calc(50% + 64px); }
+  .scene-project-link { top: calc(50% + 79px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .nav-label, .site-brand { transition: none; }
+  .scene-project-link > span::after { transition-duration: 1ms; }
+}

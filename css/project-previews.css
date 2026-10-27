@@ -1,0 +1,47 @@
+/* Optional, interaction-triggered preview media for the first three projects. */
+.project-card--animated-preview .project-card__art > img {
+  position: relative;
+  z-index: 0;
+  transition: transform 450ms ease-out, opacity 250ms ease-out;
+}
+
+.project-card__preview-video {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0;
+  transform: scale(1);
+  pointer-events: none;
+  transition: opacity 250ms ease-out, transform 450ms ease-out;
+}
+
+.project-card__art.preview-playing .project-card__preview-video { opacity: 1; }
+.project-card__art.preview-playing > img { opacity: 0; }
+
+@media (hover: hover) and (pointer: fine) {
+  .project-card--animated-preview .project-card__link:hover .project-card__preview-video,
+  .project-card--animated-preview .project-card__link:focus-visible .project-card__preview-video {
+    transform: scale(1.035);
+  }
+
+  /* Slightly lower Animal Home's mark while the existing zoom keeps its blue field full-bleed. */
+  .project-card__link[href="./animal-home/"]:hover .project-card__preview-video,
+  .project-card__link[href="./animal-home/"]:focus-visible .project-card__preview-video {
+    transform: translateY(calc(clamp(1px, 0.5cqw, 3px) + 10px)) scale(1.035);
+  }
+}
+
+/* Fill the small exposed edge created by Animal Home's additional vertical offset. */
+.project-card__link[href="./animal-home/"] .project-card__art {
+  background-color: #3DB4BC;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card--animated-preview .project-card__art > img,
+  .project-card__preview-video { transition-duration: 1ms; }
+}

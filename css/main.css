@@ -1,0 +1,191 @@
+:root {
+  --font-inter: "Inter", sans-serif;
+  --font-rockwell: "rockwell", Georgia, serif;
+  --tracking-inter: -0.05em;
+  --color-black: #000000;
+  --color-blue: #5BBBFF;
+  --color-cyan: #5BFFE4;
+  --color-purple: #BC88FF;
+  --color-yellow: #FFEC76;
+  --color-green: #96FF7C;
+  --color-red: #FF5B6B;
+  --color-gray: #A2A2A2;
+  --color-komma-yellow: #FFDE14;
+  --font-hero: 200px;
+  --font-header: 32px;
+  --font-category: 48px;
+  --font-project-link: 32px;
+  --font-brand: 48px;
+  --nav-top: max(2.8125svh, env(safe-area-inset-top));
+  --nav-inline: 4.6875%;
+  --nav-contact-inset: 4.6875vw;
+  --brand-bottom: max(2.5svh, env(safe-area-inset-bottom));
+}
+
+* { box-sizing: border-box; }
+html { background: var(--color-black); color: #fff; }
+/* A finite scrollbar thumb has no meaningful position in the circular gallery. */
+html[data-scroll-mode="animated"] { scrollbar-width: none; }
+html[data-scroll-mode="animated"]::-webkit-scrollbar { display: none; }
+body { margin: 0; }
+button, a { -webkit-tap-highlight-color: transparent; }
+button { color: inherit; }
+.font-inter { font-family: var(--font-inter); letter-spacing: var(--tracking-inter); }
+.font-rockwell { font-family: var(--font-rockwell); letter-spacing: 0; }
+.visually-hidden {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.site-header {
+  position: fixed;
+  top: var(--nav-top);
+  inset-inline: var(--nav-inline);
+  /* Keep Contacto at Inicio's viewport coordinate even with a scrollbar.
+   * The left edge and vertical placement retain their existing values. */
+  inset-inline-end: auto;
+  width: calc(100vw - var(--nav-inline) - var(--nav-contact-inset));
+  z-index: 40;
+}
+.site-nav { display: flex; align-items: center; justify-content: space-between; }
+.nav-label {
+  border: 0;
+  padding: 0;
+  background: none;
+  font-size: var(--font-header);
+  font-weight: 400;
+  line-height: 1.1875;
+  opacity: 1;
+  cursor: default;
+  -webkit-text-fill-color: currentColor;
+}
+
+/* Shared navigation states, scoped so project/editorial links keep their styles. */
+.nav-label,
+.site-brand { --navigation-color: var(--color-gray); }
+.nav-label[aria-current="page"],
+.nav-label.is-active { --navigation-color: #fff; }
+.nav-label,
+.nav-label:link,
+.nav-label:visited,
+.site-brand,
+.site-brand:link,
+.site-brand:visited {
+  color: var(--navigation-color);
+  text-decoration: none;
+  transition: color 250ms ease;
+}
+.nav-label:hover,
+.nav-label:active,
+.nav-label:focus-visible,
+.site-brand:hover,
+.site-brand:active,
+.site-brand:focus-visible { color: #fff; text-decoration: none; }
+a.nav-label, a.site-brand { cursor: pointer; }
+.nav-label:focus-visible,
+.site-brand:focus-visible {
+  outline: 2px solid var(--color-komma-yellow);
+  outline-offset: 5px;
+}
+
+/* Three finite scroll bands, including a viewport for the sticky stage.
+ * Only six scene nodes exist; JavaScript recentres the native scroll position.
+ */
+.home-experience { position: relative; height: 1900svh; overflow-anchor: none; }
+.home-stage {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100svh;
+  overflow: clip;
+  isolation: isolate;
+  background: var(--color-black);
+}
+.scene-art, .scene-copy { position: absolute; inset: 0; visibility: hidden; opacity: 0; }
+.scene-art:first-child, .scene-copy:first-child { visibility: visible; opacity: 1; }
+.scene-art { z-index: 0; }
+.quadrant-grid { position: absolute; inset: 0; display: grid; grid-template: 1fr 1fr / 1fr 1fr; gap: 0; }
+.quadrant { position: relative; min-width: 0; min-height: 0; overflow: hidden; }
+.quadrant picture, .quadrant img { display: block; width: 100%; height: 100%; }
+.quadrant img { object-fit: cover; object-position: center; }
+/* One shared overlay: opacity never compounds during a crossfade. */
+.home-overlay { position: absolute; inset: 0; z-index: 10; background: rgba(0, 0, 0, 0.60); pointer-events: none; }
+.scene-copy { z-index: 20; color: var(--scene-color); pointer-events: none; }
+.scene-category, .scene-title, .scene-project-link { position: absolute; left: 0; width: 100%; margin: 0; text-align: center; }
+.scene-category { top: calc(50% - 157px); font-size: var(--font-category); font-weight: 400; line-height: 1.166666667; }
+.scene-title {
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: var(--font-hero);
+  font-weight: 700;
+  line-height: 1.21;
+  white-space: nowrap;
+}
+/* The outer heading remains 200/64px. Only an oversized word is fitted. */
+.title-fit { display: inline-block; transform: scale(var(--title-fit, 1)); transform-origin: center; }
+.mobile-break { display: none; }
+.scene-project-link {
+  top: calc(50% + 107px);
+  z-index: 30;
+  font-size: var(--font-project-link);
+  font-weight: 700;
+  line-height: 1.21875;
+  cursor: pointer;
+  pointer-events: auto;
+}
+.scene-project-link,
+.scene-project-link:link,
+.scene-project-link:visited,
+.scene-project-link:hover,
+.scene-project-link:active { color: inherit; text-decoration: none; }
+.scene-project-link > span { position: relative; display: inline-block; white-space: nowrap; }
+.scene-project-link > span::after {
+  position: absolute;
+  right: 0;
+  bottom: -6px;
+  left: 0;
+  height: 4px;
+  background: currentColor;
+  content: "";
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 450ms ease-out;
+}
+@media (hover: hover) and (pointer: fine) {
+  .scene-project-link:hover > span::after { transform: scaleX(1); }
+}
+.scene-project-link:focus-visible { outline: none; }
+.scene-project-link:focus-visible > span { outline: 2px solid var(--color-komma-yellow); outline-offset: 5px; }
+.scene-project-link:focus-visible > span::after { transform: scaleX(1); }
+.site-brand {
+  position: fixed;
+  z-index: 40;
+  left: 50vw;
+  bottom: var(--brand-bottom);
+  transform: translateX(-50%);
+  margin: 0;
+  font-size: var(--font-brand);
+  font-weight: 400;
+  line-height: 1.166666667;
+}
+
+/* Script/library failure and reduced motion remain readable with native scroll. */
+html[data-scroll-mode="static"] .home-experience { height: auto; }
+html[data-scroll-mode="static"] .home-stage { height: auto; overflow: clip; }
+html[data-scroll-mode="static"] .art-stack,
+html[data-scroll-mode="static"] .copy-stack,
+html[data-scroll-mode="static"] .home-overlay { display: none; }
+.static-scenes { display: none; }
+html[data-scroll-mode="static"] .static-scenes { display: block; }
+.static-scene { position: relative; height: 100svh; overflow: hidden; isolation: isolate; }
+.static-scene .scene-art, .static-scene .scene-copy { visibility: visible; opacity: 1; }
+.static-scene .home-overlay { display: block !important; }
