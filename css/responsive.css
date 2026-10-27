@@ -12,22 +12,57 @@
   }
   .site-nav { gap: 16px; }
   .nav-label { line-height: 1.142857143; }
+  /* Keep the three labels as one centered group. Flow layout makes the title's
+     actual one/two-line height determine both adjoining visual spaces. */
+  .copy-stack > .scene-copy,
+  .static-scene > .scene-copy {
+    --scene-label-gap: 10px;
+    --scene-cta-gap: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    padding-inline: 12px;
+  }
+  .copy-stack > .scene-copy:nth-child(2),
+  .static-scene:nth-child(2) > .scene-copy,
+  .copy-stack > .scene-copy:nth-child(3),
+  .static-scene:nth-child(3) > .scene-copy,
+  .copy-stack > .scene-copy:nth-child(5),
+  .static-scene:nth-child(5) > .scene-copy,
+  .copy-stack > .scene-copy:nth-child(6),
+  .static-scene:nth-child(6) > .scene-copy {
+    --scene-label-gap: 9px;
+    --scene-cta-gap: 9px;
+  }
+  .copy-stack > .scene-copy:nth-child(4),
+  .static-scene:nth-child(4) > .scene-copy {
+    --scene-label-gap: 11px;
+    --scene-cta-gap: 11px;
+  }
+  .scene-category,
+  .scene-title,
+  .scene-project-link {
+    position: relative;
+    inset: auto;
+    left: auto;
+    width: 100%;
+  }
   .scene-category {
-    top: auto;
-    bottom: calc(50% + 90px);
-    padding-inline: 24px;
-    line-height: 1.166666667;
+    padding-inline: 12px;
+    line-height: 1.08;
   }
   .scene-title {
-    top: 50%;
-    transform: translateY(-50%);
-    padding-inline: 12px;
+    margin-top: var(--scene-label-gap);
+    transform: none;
+    padding-inline: 0;
     white-space: normal;
-    line-height: 1.08;
+    line-height: 1;
   }
   .title-fit { max-width: 100%; }
   .mobile-break { display: inline; }
-  .scene-project-link { top: calc(50% + 109px); font-size: 24px; line-height: 1.21875; }
+  .scene-project-link { margin-top: var(--scene-cta-gap); font-size: 24px; line-height: 1.21875; }
 }
 
 @media (max-height: 450px) and (min-width: 768px) {
